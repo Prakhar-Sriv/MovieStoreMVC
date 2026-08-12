@@ -1,0 +1,223 @@
+﻿@* @{
+    string username = User.Identity.Name;
+}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Movie store</title>
+    <link rel="stylesheet" href="/css/style.css">
+    <link rel="stylesheet" href="/css/forms.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="icon" href="/images/movie_filter_FILL0_wght400_GRAD0_opsz48.svg">
+    <link href="https://fonts.googleapis.com/css2?family=Mukta:wght@500&display=swap" rel="stylesheet">
+</head>
+<body>
+    <nav class="nav-bar">
+        <div class="logo">
+            movie store
+        </div>
+        <ul class="nav-link">
+            <li><a class="active" href="/Home/Index">Home</a></li>
+            <li><a href="/Home/About">About</a></li>
+            @if (!string.IsNullOrEmpty(username))
+            {
+                <li>
+                    <a href="#">Admin <i class="fa fa-caret-down"></i></a>
+
+                    <ul class="dropdown-nav-link">
+                        <li><a href="/Genre/Add">Genre</a></li>
+                        <li><a href="/Movie/Add">Movie</a></li>
+                        <li><a href="/UserAuthentication/Logout">Logout</a></li>
+                    </ul>
+                </li>
+            }
+           
+            @if(string.IsNullOrEmpty(username)){
+                <li><a href="/UserAuthentication/Login">Login</a></li>
+            }
+        </ul>
+    </nav>
+    <div class="container">
+       @RenderBody()
+    </div>
+    <footer>
+        &#169; @DateTime.UtcNow.Year Ravindra Devrani
+    </footer>
+</body>
+</html> *@
+@{
+    string username = User.Identity.Name;
+}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Movie Store</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@500;600&family=Mukta:wght@500&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" />
+    <link rel="icon" href="/images/movie_filter_FILL0_wght400_GRAD0_opsz48.svg" />
+
+    <style>
+        /* ------------- Reset & Base ------------- */
+        *,
+        *::before,
+        *::after {
+          box-sizing: border-box;
+        }
+        body {
+          margin: 0;
+          font-family: 'Poppins', sans-serif;
+          background: #f5f5f5;
+          color: #333;
+        }
+        a { text-decoration: none; }
+
+        /* ------------- Header ------------- */
+        header {
+          position: sticky;
+          top: 0;
+          background: #222;
+          color: #fff;
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          padding: 1rem 2rem;
+          box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+          z-index: 100;
+          animation: fadeInDown 0.6s ease-out;
+        }
+        .logo {
+          font-size: 1.75rem;
+          font-weight: 600;
+        }
+        nav {
+          display: flex;
+          align-items: center;
+          gap: 1.5rem;
+        }
+        nav a,
+        nav .dropdown > a {
+          color: #ddd;
+          padding: 0.5rem;
+          transition: color 0.3s, transform 0.3s;
+        }
+        nav a:hover,
+        nav .dropdown > a:hover {
+          color: #fff;
+          transform: translateY(-2px);
+        }
+        .dropdown {
+          position: relative;
+        }
+        .dropdown-menu {
+          position: absolute;
+          top: 2.5rem;
+          background: #333;
+          display: none;
+          flex-direction: column;
+          border-radius: 4px;
+          overflow: hidden;
+        }
+        .dropdown:hover .dropdown-menu {
+          display: flex;
+          animation: fadeIn 0.2s ease-in;
+        }
+        .dropdown-menu a {
+          color: #eee;
+          padding: 0.75rem 1rem;
+          transition: background 0.3s;
+        }
+        .dropdown-menu a:hover {
+          background: #444;
+        }
+
+        /* ------------- Main Content ------------- */
+        .content {
+          max-width: 960px;
+          margin: 2rem auto;
+          padding: 1.5rem;
+          background: #fff;
+          border-radius: 6px;
+          box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        /* ------------- Footer ------------- */
+        footer {
+          background: #222;
+          color: #aaa;
+          padding: 1rem 2rem;
+          text-align: center;
+          animation: fadeInUp 0.6s ease-out;
+        }
+        .social-icons {
+          margin-top: 0.5rem;
+        }
+        .social-icons a {
+          color: #aaa;
+          margin: 0 0.5rem;
+          font-size: 1.2rem;
+          transition: color 0.3s, transform 0.3s;
+        }
+        .social-icons a:hover {
+          color: #fff;
+          transform: scale(1.2);
+        }
+
+        /* ------------- Animations ------------- */
+        @@keyframes fadeIn { from { opacity: 0; transform: translateY(-10px); } to { opacity: 1; transform: translateY(0); } }
+        @@keyframes fadeInDown { from { opacity: 0; transform: translateY(-20px); } to { opacity:1; transform: translateY(0); } }
+        @@keyframes fadeInUp { from { opacity: 0; transform: translateY(20px); } to { opacity:1; transform: translateY(0); } }
+
+        /* ------------- Mobile Responsive ------------- */
+        @@media (max-width: 600px) {
+          header { flex-direction: column; align-items: start; }
+          nav { flex-wrap: wrap; gap: 1rem; margin-top: 0.5rem; }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="logo">🎬 Movie Store</div>
+        <nav>
+            <a href="/Home/Index">Home</a>
+            <a href="/Home/About">About</a>
+            @if (!string.IsNullOrEmpty(username))
+            {
+                <div class="dropdown">
+                    <a href="#">Admin <i class="fa fa-caret-down"></i></a>
+                    <div class="dropdown-menu">
+                        <a href="/Genre/Add">Genre</a>
+                        <a href="/Movie/Add">Movie</a>
+                        <a href="/UserAuthentication/Logout">Logout</a>
+                    </div>
+                </div>
+            }
+            @if (string.IsNullOrEmpty(username))
+            {
+                <a href="/UserAuthentication/Login">Login</a>
+            }
+        </nav>
+    </header>
+
+    <main class="content">
+        @RenderBody()
+    </main>
+
+    <footer>
+        <p>© @DateTime.UtcNow.Year Prakhar Srivastava</p>
+        <div class="social-icons">
+            <a href="#"><i class="fa fa-facebook"></i></a>
+            <a href="#"><i class="fa fa-twitter"></i></a>
+            <a href="#"><i class="fa fa-instagram"></i></a>
+        </div>
+    </footer>
+</body>
+</html>
